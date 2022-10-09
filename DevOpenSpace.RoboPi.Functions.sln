@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpenSpace.RoboPi.Functions", "DevOpenSpace.RoboPi.Functions\DevOpenSpace.RoboPi.Functions.csproj", "{6F3A5204-2C26-4F29-A19E-57F2FA35B2D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpenSpace.RoboPi.Tests", "DevOpenSpace.RoboPi.Tests\DevOpenSpace.RoboPi.Tests.csproj", "{0F80E725-F15A-497B-876C-9DDD82AB96E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpenSpace.RoboPi.Core", "DevOpenSpace.RoboPi.Core\DevOpenSpace.RoboPi.Core.csproj", "{1FA2C255-7675-4D16-BA64-3B08B8F54500}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6F3A5204-2C26-4F29-A19E-57F2FA35B2D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F3A5204-2C26-4F29-A19E-57F2FA35B2D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F3A5204-2C26-4F29-A19E-57F2FA35B2D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F3A5204-2C26-4F29-A19E-57F2FA35B2D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F80E725-F15A-497B-876C-9DDD82AB96E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F80E725-F15A-497B-876C-9DDD82AB96E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F80E725-F15A-497B-876C-9DDD82AB96E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F80E725-F15A-497B-876C-9DDD82AB96E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FA2C255-7675-4D16-BA64-3B08B8F54500}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FA2C255-7675-4D16-BA64-3B08B8F54500}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FA2C255-7675-4D16-BA64-3B08B8F54500}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FA2C255-7675-4D16-BA64-3B08B8F54500}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {816455F7-88D6-4A43-BD8E-44F478F8D3ED}
+	EndGlobalSection
+EndGlobal
