@@ -52,6 +52,13 @@ namespace DevOpenSpace.RoboPi.Functions
                 return new OkObjectResult(response);
             }
 
+
+            bool isValid = await ValidateRequest(req, _logger, skillRequest);
+            if (!isValid)
+            {
+                return new BadRequestResult();
+            }
+
             var requestType = skillRequest.GetRequestType();
             
 
@@ -112,7 +119,58 @@ namespace DevOpenSpace.RoboPi.Functions
             return new OkObjectResult(response);
         }
 
-        public static ILocaleSpeech SetupLanguages(SkillRequest skillRequest)
+        private static async Task<bool> ValidateRequest(HttpRequest request, ILogger log, SkillRequest skillRequest)
+        {
+            request.Headers.TryGetValue("SignatureCertChainUrl", out var signatureChainUrl);
+            if (string.IsNullOrWhiteSpace(signatureChainUrl))
+            {
+                log.LogError("Validation failed. Empty SignatureCertChainUrl header");
+                return false;
+            }
+
+            Uri certUrl;
+            try
+            {
+                certUrl = new Uri(signatureChainUrl);
+            }
+            catch
+            {
+                log.LogError($"Validation failed. SignatureChainUrl not valid: {signatureChainUrl}");
+                return false;
+            }
+
+            request.Headers.TryGetValue("Signature", out var signature);
+            if (string.IsNullOrWhiteSpace(signature))
+            {
+                log.LogError("Validation failed - Empty Signature header");
+                return false;
+            }
+
+            request.Body.Position = 0;
+            var body = await request.ReadAsStringAsync();
+            request.Body.Position = 0;
+
+            if (string.IsNullOrWhiteSpace(body))
+            {
+                log.LogError("Validation failed - the JSON is empty");
+                return false;
+            }
+
+            bool isTimestampValid = RequestVerification.RequestTimestampWithinTolerance(skillRequest);
+            bool valid = await RequestVerification.Verify(signature, certUrl, body);
+
+            if (!valid || !isTimestampValid)
+            {
+                log.LogError("Validation failed - RequestVerification failed");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private static ILocaleSpeech SetupLanguages(SkillRequest skillRequest)
         {
             var store = new DictionaryLocaleSpeechStore();
             store.AddLanguage("en", new Dictionary<string, object>
