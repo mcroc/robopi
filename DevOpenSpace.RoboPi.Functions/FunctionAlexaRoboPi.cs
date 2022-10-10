@@ -40,7 +40,6 @@ namespace DevOpenSpace.RoboPi.Functions
             _logger.LogInformation(json);
 
             var skillRequest = JsonConvert.DeserializeObject<SkillRequest>(json);
-            var locale = SetupLanguages(skillRequest);
 
             SkillResponse response = null;
 
@@ -52,6 +51,7 @@ namespace DevOpenSpace.RoboPi.Functions
                 return new OkObjectResult(response);
             }
 
+            var locale = SetupLanguages(skillRequest);
 
             bool isValid = await ValidateRequest(req, _logger, skillRequest);
             if (!isValid)
@@ -64,7 +64,7 @@ namespace DevOpenSpace.RoboPi.Functions
 
             if (requestType == typeof(LaunchRequest))
             {
-                response = ResponseBuilder.Tell("Wilkommen beim DevOpenSpace!");
+                response = ResponseBuilder.Tell("Willkommen beim DevOpenSpace!");
                 response.Response.ShouldEndSession = false;
             }
             else if (requestType == typeof(IntentRequest))
@@ -175,20 +175,20 @@ namespace DevOpenSpace.RoboPi.Functions
             var store = new DictionaryLocaleSpeechStore();
             store.AddLanguage("en", new Dictionary<string, object>
             {
-                { "Welcome", "Welcome to the AppConsult skill!" },
-                { "LastPosts", "The title of the last article is {0}" },
+                { "Welcome", "Welcome to DevOpenSpace!" },
+                { "StartEins", "Start Robo Pi 1." },
                 { "Cancel", "I'm cancelling the request..." },
-                { "Help", "You can ask me, for example, which is the last article." },
+                { "Help", "You can ask me, for example, to turn Robo Pi One left." },
                 { "Stop", "Goodbye!" }
             });
 
-            store.AddLanguage("it", new Dictionary<string, object>
+            store.AddLanguage("de", new Dictionary<string, object>
             {
-                { "Welcome", "Benvenuti in Windows AppConsult!" },
-                { "LastPosts", "Il titolo dell'ultimo articolo è {0}" },
-                { "Cancel", "Sto annullando la richiesta..." },
-                { "Help", "Puoi chiedermi, ad esempio, qual è l'ultimo articolo. " },
-                { "Stop", "Alla prossima!" }
+                { "Welcome", "Willkommen beim DevOpenSpace!" },
+                { "StartEins", "Starte Robo Pi 1." },
+                { "Cancel", "Anfrage wird beendet..." },
+                { "Help", "Du kannst mich fragen den Robo Pi Eins links zu steuern." },
+                { "Stop", "Tschüss" }
             });
 
 
