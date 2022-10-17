@@ -18,63 +18,88 @@ public class IntentServiceTests
     [TestMethod]
     public void GetMessage_StartEins()
     {
-        var message = _intentService.GetMessage("StartEins");
-        Assert.IsNotNull(message);
-        Assert.AreEqual(Intent.Start, message.Intent);
-        Assert.AreEqual(1, message.RoboPiNumber);
+        var messages = _intentService.GetMessages("StartEins");
+        Assert.IsNotNull(messages);
+        Assert.IsTrue(messages.Any());
+        Assert.AreEqual(Intent.Start, messages[0].Intent);
+        Assert.AreEqual(1, messages[0].RoboPiNumber);
     }
 
     [TestMethod]
     public void GetMessage_StoppZwei()
     {
-        var message = _intentService.GetMessage("StoppZwei");
-        Assert.IsNotNull(message);
-        Assert.AreEqual(Intent.Stopp, message.Intent);
-        Assert.AreEqual(2, message.RoboPiNumber);
+        var messages = _intentService.GetMessages("StoppZwei");
+        Assert.IsNotNull(messages);
+        Assert.IsTrue(messages.Any());
+        Assert.AreEqual(Intent.Stopp, messages[0].Intent);
+        Assert.AreEqual(2, messages[0].RoboPiNumber);
     }
 
     [TestMethod]
     public void GetMessage_RechtsDrei()
     {
-        var message = _intentService.GetMessage("RechtsDrei");
-        Assert.IsNotNull(message);
-        Assert.AreEqual(Intent.Rechts, message.Intent);
-        Assert.AreEqual(3, message.RoboPiNumber);
+        var messages = _intentService.GetMessages("RechtsDrei");
+        Assert.IsNotNull(messages);
+        Assert.IsTrue(messages.Any());
+        Assert.AreEqual(Intent.Rechts, messages[0].Intent);
+        Assert.AreEqual(3, messages[0].RoboPiNumber);
     }
 
     [TestMethod]
-    public void GetMessage_LinksZehn()
+    public void GetMessage_LinksZwei()
     {
-        var message = _intentService.GetMessage("LinksZehn");
-        Assert.IsNotNull(message);
-        Assert.AreEqual(Intent.Links, message.Intent);
-        Assert.AreEqual(10, message.RoboPiNumber);
+        var messages = _intentService.GetMessages("LinksZwei");
+        Assert.IsNotNull(messages);
+        Assert.IsTrue(messages.Any());
+        Assert.AreEqual(Intent.Links, messages[0].Intent);
+        Assert.AreEqual(2, messages[0].RoboPiNumber);
     }
 
     [TestMethod]
-    public void GetMessage_VorwaertsSieben()
+    public void GetMessage_VorwaertsDrei()
     {
-        var message = _intentService.GetMessage("VorwaertsSieben");
-        Assert.IsNotNull(message);
-        Assert.AreEqual(Intent.Vorwaerts, message.Intent);
-        Assert.AreEqual(7, message.RoboPiNumber);
+        var messages = _intentService.GetMessages("VorwaertsDrei");
+        Assert.IsNotNull(messages);
+        Assert.IsTrue(messages.Any());
+        Assert.AreEqual(Intent.Vorwaerts, messages[0].Intent);
+        Assert.AreEqual(3, messages[0].RoboPiNumber);
     }
 
     [TestMethod]
-    public void GetMessage_RueckwaertsZwoelf()
+    public void GetMessage_RueckwaertsEins()
     {
-        var message = _intentService.GetMessage("RueckwaertsZwoelf");
-        Assert.IsNotNull(message);
-        Assert.AreEqual(Intent.Rueckwaerts, message.Intent);
-        Assert.AreEqual(12, message.RoboPiNumber);
+        var messages = _intentService.GetMessages("RueckwaertsEins");
+        Assert.IsNotNull(messages);
+        Assert.IsTrue(messages.Any());
+        Assert.AreEqual(Intent.Rueckwaerts, messages[0].Intent);
+        Assert.AreEqual(1, messages[0].RoboPiNumber);
     }
 
     [TestMethod]
     public void GetMessage_WrongIntent()
     {
-        var message = _intentService.GetMessage("ObenDreizehn");
-        Assert.IsNotNull(message);
-        Assert.AreEqual(Intent.Unbekannt, message.Intent);
-        Assert.AreEqual(0, message.RoboPiNumber);
+        var messages = _intentService.GetMessages("ObenDreizehn");
+        Assert.IsNotNull(messages);
+        Assert.IsFalse(messages.Any());
+    }
+
+    [TestMethod]
+    public void GetMessage_StartAlle()
+    {
+        var messages = _intentService.GetMessages("StartAlle");
+        Assert.IsNotNull(messages);
+        Assert.IsTrue(messages.Any());
+        Assert.AreEqual(3, messages.Count);
+        Assert.IsTrue(messages.All(m => m.Intent == Intent.Start));
+    }
+
+    [TestMethod]
+    public void GetMessage_StoppAlle()
+    {
+        var messages = _intentService.GetMessages("StoppAlle");
+        Assert.IsNotNull(messages);
+        Assert.IsTrue(messages.Any());
+        Assert.AreEqual(3, messages.Count);
+        Assert.IsTrue(messages.All(m => m.Intent == Intent.Stopp));
     }
 }

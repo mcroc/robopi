@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Alexa.NET;
@@ -75,19 +76,13 @@ namespace DevOpenSpace.RoboPi.Functions
                 _logger.LogInformation(intentName);
                 if (!string.IsNullOrEmpty(intentName))
                 {
-                    var intentMessage = _intentService.GetMessage(intentName);
-                    _logger.LogInformation(intentMessage.Message);
-
-                    var serviceBusMessage = new ServiceBusMessage(intentMessage.Intent.ToString());
-                    string connectionString = Environment.GetEnvironmentVariable("ServiceBusConnectionString");
-
-                    if (!string.IsNullOrEmpty(connectionString) && intentMessage.RoboPiNumber > 0)
+                    var intentMessages = _intentService.GetMessages(intentName);
+                    intentMessages.ForEach(intentMessage =>
                     {
-                        ServiceBusClient client = new ServiceBusClient(connectionString);
-                        var sender = client.CreateSender($"robopicarnumber{intentMessage.RoboPiNumber}");
-                        await sender.SendMessageAsync(serviceBusMessage, new CancellationToken());
-                    }
-                    else if (intentRequest.Intent.Name == "AMAZON.CancelIntent")
+                        _logger.LogInformation(intentMessage.Message);
+                    });
+
+                    if (intentRequest.Intent.Name == "AMAZON.CancelIntent")
                     {
                         var message = await locale.Get("Cancel", null);
                         return new OkObjectResult(ResponseBuilder.Tell(message));
@@ -105,7 +100,21 @@ namespace DevOpenSpace.RoboPi.Functions
                         return new OkObjectResult(ResponseBuilder.Tell(message));
                     }
 
-                    response = ResponseBuilder.Tell(intentMessage.Message);
+                    string connectionString = Environment.GetEnvironmentVariable("ServiceBusConnectionString");
+                    ServiceBusClient client = new ServiceBusClient(connectionString);
+
+                    foreach (var intentMessage in intentMessages)
+                    {
+                        var serviceBusMessage = new ServiceBusMessage(intentMessage.Intent.ToString());
+
+                        if (!string.IsNullOrEmpty(connectionString) && intentMessage.RoboPiNumber > 0)
+                        {
+                            var sender = client.CreateSender($"robopicarnumber{intentMessage.RoboPiNumber}");
+                            await sender.SendMessageAsync(serviceBusMessage, new CancellationToken());
+                        }
+                    }
+
+                    response = ResponseBuilder.Tell(string.Join(" ", intentMessages.Select(i => i.Message)));
                     response.Response.ShouldEndSession = false;
                 }
             }

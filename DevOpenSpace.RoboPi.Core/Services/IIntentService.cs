@@ -9,6 +9,6 @@ namespace DevOpenSpace.RoboPi.Core.Services;
 
 public interface IIntentService
 {
-    IntentMessage GetMessage(string intentName);
+    List<IntentMessage> GetMessages(string intentName);
 }
 
