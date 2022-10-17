@@ -1,3 +1,7 @@
 /DevOpenSpace.RoboPi.Functions/Properties/PublishProfiles
 bin
 obj
+/.vs/DevOpenSpace.RoboPi.Functions/config/applicationhost.config
+/.vs
+/DevOpenSpace.RoboPi.NodeJs/node_modules
+/_NCrunch_DevOpenSpace.RoboPi.Functions

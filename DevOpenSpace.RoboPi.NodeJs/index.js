@@ -1,12 +1,32 @@
 const ws = require('ws');
 const { delay, ServiceBusClient, ServiceBusMessage } = require("@azure/service-bus");
 
-const connectionString = 'Endpoint=sb://devopenspacerobopi.servicebus.windows.net/;SharedAccessKeyName=DevOpenSpace;SharedAccessKey=TiPChIAXxLl4fH1qu+TXI7pDQLs7yqFAkGlZuSX2wR8=';
+const connectionString = '!!!place here your connection string!!!';
 const topicName = 'robopicarnumber1';
-const subscriptionName = 'robobicar1-pi';
+const subscriptionName = 'robopicar1-pi';
 
 async function main() {
-    
+    const { networkInterfaces } = require('os');
+
+    const nets = networkInterfaces();
+    const results = Object.create(null); // Or just '{}', an empty object
+
+    for (const name of Object.keys(nets)) {
+        for (const net of nets[name]) {
+            // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
+            // 'IPv4' is in Node <= 17, from 18 it's a number 4 or 6
+            const familyV4Value = typeof net.family === 'string' ? 'IPv4' : 4
+            if (net.family === familyV4Value && !net.internal) {
+                if (!results[name]) {
+                    results[name] = [];
+                }
+                results[name].push(net.address);
+            }
+        }
+    }
+
+    console.log("results[wlan0]: " + results["wlan0"]);
+
     while(1 === 1) {
         var counter = 0;
         // create a Service Bus client using the connection string to the Service Bus namespace
@@ -18,7 +38,7 @@ async function main() {
         // function to handle messages
         const myMessageHandler = async (messageReceived) => {        
             console.log(`Received message: ${messageReceived.body}`);
-            const sendWs = new ws.WebSocket("ws://10.10.10.229:8765");
+            const sendWs = new ws.WebSocket("ws://" + results["wlan0"] + ":8765");
             /*if(counter === 1) {
                 sendWs.close();
                 process.exit();
